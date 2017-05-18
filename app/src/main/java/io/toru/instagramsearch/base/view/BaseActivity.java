@@ -1,4 +1,4 @@
-package io.toru.instagramsearch.base.ui.activity;
+package io.toru.instagramsearch.base.view;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

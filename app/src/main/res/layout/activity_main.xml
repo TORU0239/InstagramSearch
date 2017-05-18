@@ -12,10 +12,5 @@
         <android.support.v7.widget.Toolbar
             style="@style/BasicToolbarTheme"
             app:title="@string/app_name"/>
-
-        <TextView
-            android:id="@+id/txt_test"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
     </LinearLayout>
 </layout>

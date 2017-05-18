@@ -8,4 +8,24 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <!-- Instagram search app theme -->
+    <style name="InstagramSearchAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/gelato_color_primary</item>
+        <item name="colorPrimaryDark">@color/gelato_color_primary_dark</item>
+        <item name="colorAccent">@color/gelato_color_accent</item>
+    </style>
+
+    <!-- basic toolbar label theme -->
+    <style name="BasicToolbarLabelTheme" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- basic toolbar theme -->
+    <style name="BasicToolbarTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">@color/gelato_color_primary</item>
+        <item name="titleTextAppearance">@style/BasicToolbarLabelTheme</item>
+    </style>
 </resources>

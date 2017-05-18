@@ -3,7 +3,7 @@ package io.toru.instagramsearch.view;
 import android.app.Activity;
 
 import io.toru.instagramsearch.R;
-import io.toru.instagramsearch.base.ui.activity.BaseActivity;
+import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityMainBinding;
 
 public class MainActivity extends BaseActivity {

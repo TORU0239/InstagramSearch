@@ -22,6 +22,5 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initUI() {
         mainBinding = (ActivityMainBinding)binding;
-        mainBinding.txtTest.setText("hello, world!!");
     }
 }

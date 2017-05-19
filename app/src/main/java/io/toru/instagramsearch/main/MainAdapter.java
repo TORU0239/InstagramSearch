@@ -1,4 +1,4 @@
-package io.toru.instagramsearch.view;
+package io.toru.instagramsearch.main;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;

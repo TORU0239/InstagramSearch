@@ -27,5 +27,7 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@color/gelato_color_primary</item>
         <item name="titleTextAppearance">@style/BasicToolbarLabelTheme</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 </resources>

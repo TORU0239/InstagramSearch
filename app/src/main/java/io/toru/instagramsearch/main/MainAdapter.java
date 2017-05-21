@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.databinding.RowSearchedImageBinding;
 import io.toru.instagramsearch.main.model.InstagramItemModel;
@@ -55,6 +57,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         public void bind(InstagramItemModel model) {
             binding.setInstagramModel(model);
             binding.executePendingBindings();
+            loadImage();
+        }
+
+        private void loadImage(){
+            Glide.with(binding.getRoot().getContext())
+                    .load(binding.getInstagramModel().getImages().getStandardResolution().getUrl())
+                    .into(binding.imgSearched);
         }
     }
 }

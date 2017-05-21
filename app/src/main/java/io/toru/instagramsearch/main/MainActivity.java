@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.w(TAG, "query:" + query);
+                searchView.setIconified(true); // searchview close button action
                 searchView.clearFocus();
                 presenter.onCallNetwork(query);
                 return true;

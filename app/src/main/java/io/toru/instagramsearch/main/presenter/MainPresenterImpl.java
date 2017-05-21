@@ -4,6 +4,7 @@ import android.util.Log;
 
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.network.ConnectionInstagram;
+import io.toru.instagramsearch.util.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,11 +17,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainPresenterImpl implements MainTask.MainPresenter {
     private static final String TAG = MainPresenterImpl.class.getSimpleName();
-
     private MainTask.MainView mainView;
+
+    private Retrofit retrofit;
 
     public MainPresenterImpl(MainTask.MainView mainView) {
         this.mainView = mainView;
+        initRetrofit();
+    }
+
+    private void initRetrofit(){
+        if(retrofit == null){
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(Constant.INSTAGRAM_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
     }
 
     @Override
@@ -28,13 +40,8 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
         mainView.onShowProgressDialog();
         // TODO: 여기서 네트웍 콜을 한다.
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.instagram.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         ConnectionInstagram service = retrofit.create(ConnectionInstagram.class);
-        Call<InstagramModel> itemModelCall = service.getModel("toru_0239");
+        Call<InstagramModel> itemModelCall = service.getModel(id);
         itemModelCall.enqueue(new Callback<InstagramModel>() {
             @Override
             public void onResponse(Call<InstagramModel> call, Response<InstagramModel> response) {

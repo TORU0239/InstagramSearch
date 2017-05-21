@@ -6,6 +6,9 @@ import android.util.Log;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.network.ConnectionInstagram;
 import io.toru.instagramsearch.util.Constant;
+import okhttp3.OkHttpClient;
+import okhttp3.internal.http.BridgeInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,9 +32,15 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
 
     private void initRetrofit(){
         if(retrofit == null){
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            httpClient.addInterceptor(loggingInterceptor);
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(Constant.INSTAGRAM_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient.build())
                     .build();
         }
     }

@@ -1,6 +1,7 @@
 package io.toru.instagramsearch.main.presenter;
 
 import io.toru.instagramsearch.base.view.BaseView;
+import io.toru.instagramsearch.main.model.InstagramModel;
 
 /**
  * Created by wonyoung on 2017. 5. 19..
@@ -8,7 +9,7 @@ import io.toru.instagramsearch.base.view.BaseView;
 
 public interface MainTask {
     interface MainView extends BaseView{
-        void onUpdateInstagramList();
+        void onUpdateInstagramList(InstagramModel instagramModel);
     }
 
     interface MainPresenter{

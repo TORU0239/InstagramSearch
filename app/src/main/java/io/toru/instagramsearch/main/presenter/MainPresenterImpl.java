@@ -41,6 +41,10 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
                 Log.w(TAG, response.message());
                 Log.w(TAG, "itemList :: " + response.body().getItemList().length
                         + ", status: " + response.body().getStatus());
+
+                // 결과를 받아서 뷰를 업데이트해 준다
+                mainView.onUpdateInstagramList(response.body());
+                mainView.onHideProgressDialog();
             }
 
             @Override
@@ -48,9 +52,5 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
                 t.printStackTrace();
             }
         });
-
-        // 결과를 받아서 뷰를 업데이트해 준다
-        mainView.onUpdateInstagramList();
-        mainView.onHideProgressDialog();
     }
 }

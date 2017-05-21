@@ -1,15 +1,17 @@
-package io.toru.instagramsearch.main;
+package io.toru.instagramsearch.main.view;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.databinding.RowSearchedImageBinding;
+import io.toru.instagramsearch.detail.DetailActivity;
 import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
 
@@ -43,11 +45,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     }
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
-        private RowSearchedImageBinding binding;
+        private final RowSearchedImageBinding binding;
 
-        public MainViewHolder(ViewDataBinding binding) {
-            super(binding.getRoot());
-            this.binding = (RowSearchedImageBinding) binding;
+        public MainViewHolder(ViewDataBinding viewDataBinding) {
+            super(viewDataBinding.getRoot());
+            binding = (RowSearchedImageBinding)viewDataBinding;
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
+                            binding.getInstagramModel()));
+                }
+            });
         }
 
         public RowSearchedImageBinding getBinding() {

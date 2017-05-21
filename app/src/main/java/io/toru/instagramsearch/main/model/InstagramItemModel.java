@@ -47,11 +47,9 @@ public class InstagramItemModel implements Parcelable{
     @SerializedName("alt_media_url")
     private String altMediaUrl;
 
-    // carousel model
     @SerializedName("carousel_media")
     private CarouselModel[] carouselMedia;
 
-    // video model
     @SerializedName("videos")
     private VideoModel video;
 

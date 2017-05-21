@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="io.toru.instagramsearch.main.MainActivity">
+        tools:context="io.toru.instagramsearch.main.view.MainActivity">
 
         <android.support.v7.widget.Toolbar
             style="@style/BasicToolbarTheme"

@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="instagramModel"
+            type="io.toru.instagramsearch.main.model.InstagramItemModel"/>
+    </data>
 
-    <ImageView
-        android:id="@+id/img_searched"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"/>
-</LinearLayout>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_searched"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"/>
+        <TextView
+            android:id="@+id/txt_instagram_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:padding="16dp"
+            android:text="@{@string/main_searched_image_like_cnt(instagramModel.likes.count)}"
+            android:textColor="@android:color/white"
+            tools:text="test"/>
+
+    </RelativeLayout>
+</layout>

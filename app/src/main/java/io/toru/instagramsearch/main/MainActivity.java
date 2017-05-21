@@ -1,14 +1,18 @@
 package io.toru.instagramsearch.main;
 
 import android.app.Activity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityMainBinding;
+import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.main.presenter.MainPresenterImpl;
 import io.toru.instagramsearch.main.presenter.MainTask;
 
@@ -40,8 +44,8 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.w(TAG, "query:" + query);
+                searchView.setIconified(true); // searchview close button action
                 searchView.clearFocus();
-                //TODO: 여기서 검색을 태운다.
                 presenter.onCallNetwork(query);
                 return true;
             }
@@ -69,5 +73,8 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
     }
 
     @Override
-    public void onUpdateInstagramList() {}
+    public void onUpdateInstagramList(InstagramModel model) {
+        mainBinding.rcvMain.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        mainBinding.rcvMain.setAdapter(new MainAdapter(model));
+    }
 }

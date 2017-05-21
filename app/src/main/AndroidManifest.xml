@@ -20,9 +20,9 @@
                 <!--<action android:name="android.intent.action.SEARCH" />-->
             </intent-filter>
 
-            <!--<meta-data-->
-                <!--android:name="android.app.searchable"-->
-                <!--android:resource="@xml/searchable" />-->
+            <meta-data
+                android:name="io.toru.instagramsearch.util.InstagramGlideModule"
+                android:value="InstagramGlideModule"/>
         </activity>
     </application>
 </manifest>

@@ -3,4 +3,6 @@
     <string name="search">Search</string>
 
     <string name="main_search_id">ID Search</string>
+    <string name="main_searched_image_like_cnt" translatable="false">%s likes</string>
+
 </resources>

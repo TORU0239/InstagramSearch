@@ -27,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(getCurrentActivity(), getLayoutId());
         setAppTaskDescription();
-        initUI();
+        initInstances();
     }
 
     @TargetApi(21)
@@ -42,5 +42,5 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract Activity getCurrentActivity();
     public abstract int getLayoutId();
-    public abstract void initUI();
+    public abstract void initInstances();
 }

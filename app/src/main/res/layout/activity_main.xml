@@ -14,10 +14,29 @@
             android:id="@+id/toolbar_main"
             app:title="@string/app_name"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcv_main"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_main_progressbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#10000000"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
     </LinearLayout>
 </layout>

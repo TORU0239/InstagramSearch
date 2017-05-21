@@ -49,7 +49,7 @@ public class InstagramItemModel implements Parcelable{
 
     // carousel model
     @SerializedName("carousel_media")
-    private String carouselMedia;
+    private CarouselModel[] carouselMedia;
 
     // video model
     @SerializedName("videos")
@@ -73,7 +73,7 @@ public class InstagramItemModel implements Parcelable{
         link = in.readString();
         location = in.readParcelable(LocationModel.class.getClassLoader());
         altMediaUrl = in.readString();
-        carouselMedia = in.readString();
+        carouselMedia = in.createTypedArray(CarouselModel.CREATOR);
         video = in.readParcelable(VideoModel.class.getClassLoader());
         videoViewsCount = in.readInt();
     }
@@ -94,7 +94,7 @@ public class InstagramItemModel implements Parcelable{
         dest.writeString(link);
         dest.writeParcelable(location, flags);
         dest.writeString(altMediaUrl);
-        dest.writeString(carouselMedia);
+        dest.writeTypedArray(carouselMedia, flags);
         dest.writeParcelable(video, flags);
         dest.writeInt(videoViewsCount);
     }
@@ -236,11 +236,11 @@ public class InstagramItemModel implements Parcelable{
         this.altMediaUrl = altMediaUrl;
     }
 
-    public String getCarouselMedia() {
+    public CarouselModel[] getCarouselMedia() {
         return carouselMedia;
     }
 
-    public void setCarouselMedia(String carouselMedia) {
+    public void setCarouselMedia(CarouselModel[] carouselMedia) {
         this.carouselMedia = carouselMedia;
     }
 

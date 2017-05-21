@@ -60,12 +60,12 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
 
     @Override
     public void onShowProgressDialog() {
-        mainBinding.rlMainProgressbar.setVisibility(View.VISIBLE);
+//        mainBinding.rlMainProgressbar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onHideProgressDialog() {
-        mainBinding.rlMainProgressbar.setVisibility(View.GONE);
+//        mainBinding.rlMainProgressbar.setVisibility(View.GONE);
     }
 
     @Override

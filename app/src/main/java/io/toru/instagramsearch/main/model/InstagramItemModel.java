@@ -13,29 +13,24 @@ public class InstagramItemModel {
     private String id;
     private String code;
 
-    // 다른 모델
-    private String user;
+    private UserModel user;
 
-    // 다른 모델
-    private String images;
+    private ImageModel images;
 
     @SerializedName("created_time")
     private long createdTime;
 
-    // caption model
     @SerializedName("caption")
-    private String caption;
+    private CaptionModel caption;
 
     @SerializedName("user_has_liked")
     private boolean HasUserLiked;
 
-    // likes model
     @SerializedName("likes")
-    private String likes;
+    private LikeModel likes;
 
-    // comments model
     @SerializedName("comments")
-    private String comments;
+    private CommentModel comments;
 
     @SerializedName("can_view_comments")
     private boolean canViewComments;
@@ -50,4 +45,9 @@ public class InstagramItemModel {
 
     @SerializedName("alt_media_url")
     private String altMediaUrl;
+
+    // carousel model
+    @SerializedName("carousel_media")
+    private String carouselMedial;
+
 }

@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 public class InstagramModel implements Parcelable {
 
     @SerializedName("items")
-    private int item;
+    private InstagramItemModel[] itemList;
 
     @SerializedName("more_available")
     private boolean isMoreAvailable;
@@ -20,16 +20,13 @@ public class InstagramModel implements Parcelable {
     @SerializedName("status")
     private String status;
 
-
     protected InstagramModel(Parcel in) {
-        item = in.readInt();
         isMoreAvailable = in.readByte() != 0;
         status = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(item);
         dest.writeByte((byte) (isMoreAvailable ? 1 : 0));
         dest.writeString(status);
     }
@@ -51,12 +48,12 @@ public class InstagramModel implements Parcelable {
         }
     };
 
-    public int getItem() {
-        return item;
+    public InstagramItemModel[] getItemList() {
+        return itemList;
     }
 
-    public void setItem(int item) {
-        this.item = item;
+    public void setItemList(InstagramItemModel[] itemList) {
+        this.itemList = itemList;
     }
 
     public boolean isMoreAvailable() {

@@ -1,8 +1,10 @@
 package io.toru.instagramsearch.main.view;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,25 +26,25 @@ import io.toru.instagramsearch.main.model.InstagramModel;
  */
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
+    private static final String TAG = MainAdapter.class.getSimpleName();
 
-    private RowSearchedImageBinding dataBinding;
-
+    private InstagramModel instagramModel;
     private ArrayList<InstagramItemModel> itemModelList;
     private OnInfiniteScrollListener infiniteScrollListener;
 
-
-    public MainAdapter(ArrayList<InstagramItemModel> itemModelList, OnInfiniteScrollListener infiniteScrollListener) {
-        this.itemModelList = itemModelList;
+    public MainAdapter(OnInfiniteScrollListener infiniteScrollListener) {
         this.infiniteScrollListener = infiniteScrollListener;
     }
 
-    public void setInfiniteScrollListener(OnInfiniteScrollListener infiniteScrollListener) {
-        this.infiniteScrollListener = infiniteScrollListener;
+    public void setInstagramModel(InstagramModel instagramModel) {
+        this.instagramModel = instagramModel;
+        this.itemModelList = new ArrayList<>(Arrays.asList(instagramModel.getItemList()));
+        notifyDataSetChanged();
     }
 
     @Override
     public MainAdapter.MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_searched_image, parent, false);
+        RowSearchedImageBinding dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_searched_image, parent, false);
         return new MainViewHolder(dataBinding);
     }
 
@@ -54,36 +56,49 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
             }
         }
 
-        holder.bind(itemModelList.get(position));
+        if(instagramModel != null){
+            holder.bind(instagramModel, itemModelList.get(position));
+        }
     }
 
     @Override
     public int getItemCount() {
+        if(itemModelList == null) {
+            return 0;
+        }
         return itemModelList.size();
     }
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
+        private static final String TAG = MainViewHolder.class.getSimpleName();
         private final RowSearchedImageBinding binding;
 
         public MainViewHolder(ViewDataBinding viewDataBinding) {
             super(viewDataBinding.getRoot());
             binding = (RowSearchedImageBinding)viewDataBinding;
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
-                            binding.getInstagramModel()));
-                }
-            });
         }
 
         public RowSearchedImageBinding getBinding() {
             return binding;
         }
 
-        public void bind(InstagramItemModel model) {
+        public void bind(final InstagramModel totalModel, final InstagramItemModel model) {
+            binding.setInstagramTotalModel(totalModel);
             binding.setInstagramModel(model);
             binding.executePendingBindings();
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
+//                            binding.getInstagramTotalModel()));
+                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
+
+                    ArrayList<InstagramItemModel> modelList = new ArrayList<InstagramItemModel>(Arrays.asList(binding.getInstagramTotalModel().getItemList()));
+                    intent.putExtra("models", modelList);
+                    v.getContext().startActivity(intent);
+                }
+            });
+
             loadImage();
         }
 

@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="instagramTotalModel"
-            type="io.toru.instagramsearch.main.model.InstagramModel"/>
-
-        <variable
             name="instagramModel"
             type="io.toru.instagramsearch.main.model.InstagramItemModel"/>
     </data>
@@ -16,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/img_searched"
+            android:id="@+id/img_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"

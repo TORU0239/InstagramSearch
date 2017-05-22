@@ -28,6 +28,8 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
     private InstagramModel instagramModel;
     private ArrayList<InstagramItemModel> itemModelList;
 
+    private MainAdapter mainAdapter;
+
     @Override
     public Activity getCurrentActivity() {
         return MainActivity.this;
@@ -52,7 +54,6 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
             public boolean onQueryTextSubmit(String query) {
                 Log.w(TAG, "query:" + query);
                 instagramQuery = query;
-                searchView.setIconified(true); // searchview close button action
                 searchView.clearFocus();
                 instagramModel = null;
                 itemModelList.clear();
@@ -68,7 +69,8 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
 
         mainBinding.rcvMain.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         mainBinding.rcvMain.setHasFixedSize(false);
-        mainBinding.rcvMain.setAdapter(new MainAdapter(itemModelList, this));
+        mainAdapter = new MainAdapter(this);
+        mainBinding.rcvMain.setAdapter(mainAdapter);
     }
 
     @Override
@@ -89,8 +91,9 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
     @Override
     public void onUpdateInstagramList(InstagramModel model){
         instagramModel = model;
+        mainAdapter.setInstagramModel(model);
         itemModelList.addAll(Util.convertArrayToList(model.getItemList()));
-        mainBinding.rcvMain.getAdapter().notifyDataSetChanged();
+        mainAdapter.notifyDataSetChanged();
     }
 
     @Override

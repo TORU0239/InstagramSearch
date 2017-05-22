@@ -88,8 +88,8 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
         mainView.onShowProgressDialog();
 
         ConnectionInstagram service = retrofit.create(ConnectionInstagram.class);
-        Call<InstagramModel> itemModelCall = service.getModelWithMaxId(instagramId, lastImageId);
-        itemModelCall.enqueue(new Callback<InstagramModel>() {
+        Call<InstagramModel> callImagesFromLastImageId = service.getModelWithMaxId(instagramId, lastImageId);
+        callImagesFromLastImageId.enqueue(new Callback<InstagramModel>() {
             @Override
             public void onResponse(Call<InstagramModel> call, Response<InstagramModel> response) {
                 Log.w(TAG, response.message());

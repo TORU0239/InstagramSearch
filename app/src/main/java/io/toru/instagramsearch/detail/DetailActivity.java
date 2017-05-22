@@ -3,14 +3,18 @@ package io.toru.instagramsearch.detail;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityDetailBinding;
 import io.toru.instagramsearch.main.model.InstagramItemModel;
+import io.toru.instagramsearch.main.model.InstagramModel;
 
 /**
  * Created by wonyoung on 2017. 5. 22..
@@ -21,10 +25,11 @@ public class DetailActivity extends BaseActivity {
 
     private ActivityDetailBinding activityDetailBinding;
 
-    public static Intent getDetailActivityIntent(Context ctx, InstagramItemModel model){
+
+    public static Intent getDetailActivityIntent(Context ctx, InstagramModel model){
         return new Intent(ctx, DetailActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra("model", model);
+                .putExtra("total_model", model);
     }
 
     @Override
@@ -39,17 +44,21 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initInstances() {
-        InstagramItemModel model = getIntent().getParcelableExtra("model");
         activityDetailBinding = (ActivityDetailBinding) binding;
+//        InstagramModel model = getIntent().getParcelableExtra("total_model");
+//
+//        Log.w(TAG, "model count:: " + model.getStatus());
+//        Log.w(TAG, "model count:: " + model.isMoreAvailable());
+//        Log.w(TAG, "model count:: " + model.getItemList().length);
 
-        // test
+        ArrayList<InstagramItemModel> modelArrayList = getIntent().getParcelableArrayListExtra("models");
+        Log.w(TAG, "model array list size : " + modelArrayList.size());
 
-        Log.w(TAG, "id::" + model.getId());
 
-        Glide.with(getCurrentActivity())
-                .load(model.getImages().getStandardResolution().getUrl())
-                .into(activityDetailBinding.imgDetail);
-        // test end
 
+//        if(model != null){
+//            activityDetailBinding.rcvDetail.setLayoutManager(new LinearLayoutManager(getCurrentActivity(), LinearLayoutManager.HORIZONTAL, false));
+//            activityDetailBinding.rcvDetail.setAdapter(new DetailAdapter(model));
+//        }
     }
 }

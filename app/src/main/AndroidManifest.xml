@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".detail.DetailActivity"
+        <activity android:name=".detail.view.DetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/DetailImageActivityTheme"/>
 

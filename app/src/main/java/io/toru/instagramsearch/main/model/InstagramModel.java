@@ -21,12 +21,14 @@ public class InstagramModel implements Parcelable {
     private String status;
 
     protected InstagramModel(Parcel in) {
+        itemList = in.createTypedArray(InstagramItemModel.CREATOR);
         isMoreAvailable = in.readByte() != 0;
         status = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedArray(itemList, flags);
         dest.writeByte((byte) (isMoreAvailable ? 1 : 0));
         dest.writeString(status);
     }

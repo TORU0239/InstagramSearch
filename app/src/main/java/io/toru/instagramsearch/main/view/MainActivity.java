@@ -7,18 +7,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityMainBinding;
+import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.main.presenter.MainPresenterImpl;
 import io.toru.instagramsearch.main.presenter.MainTask;
+import io.toru.instagramsearch.util.Util;
 
 public class MainActivity extends BaseActivity implements MainTask.MainView{
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private ActivityMainBinding mainBinding;
     private MainTask.MainPresenter presenter;
+
+    private String instagramQuery;
+    private InstagramModel instagramModel;
+
+    private MainAdapter mainAdapter;
 
     @Override
     public Activity getCurrentActivity() {
@@ -42,8 +51,9 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.w(TAG, "query:" + query);
-                searchView.setIconified(true); // searchview close button action
+                instagramQuery = query;
                 searchView.clearFocus();
+                instagramModel = null;
                 presenter.onCallNetwork(query);
                 return true;
             }
@@ -53,6 +63,11 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
                 return false;
             }
         });
+
+        mainBinding.rcvMain.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        mainBinding.rcvMain.setHasFixedSize(false);
+        mainAdapter = new MainAdapter(this);
+        mainBinding.rcvMain.setAdapter(mainAdapter);
     }
 
     @Override
@@ -71,8 +86,17 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
     }
 
     @Override
-    public void onUpdateInstagramList(InstagramModel model) {
-        mainBinding.rcvMain.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        mainBinding.rcvMain.setAdapter(new MainAdapter(model));
+    public void onUpdateInstagramList(InstagramModel model){
+        instagramModel = model;
+        mainAdapter.setInstagramModel(instagramQuery, model);
+        mainAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadMore(String lastImageId) {
+        Log.w(TAG, "onLoadMore, id:: " + lastImageId);
+        if(instagramModel.isMoreAvailable()){
+            presenter.onCallMoreList(instagramQuery, lastImageId);
+        }
     }
 }

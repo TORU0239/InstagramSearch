@@ -3,26 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="instagramTotalModel"
-            type="io.toru.instagramsearch.main.model.InstagramModel"/>
-
-        <variable
             name="instagramModel"
             type="io.toru.instagramsearch.main.model.InstagramItemModel"/>
-
-        <variable
-            name="searchedID"
-            type="String"/>
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/img_searched"
+            android:id="@+id/img_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"/>
         <TextView

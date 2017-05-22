@@ -9,9 +9,13 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import io.toru.instagramsearch.R;
+import io.toru.instagramsearch.base.listener.OnInfiniteScrollListener;
 import io.toru.instagramsearch.databinding.RowSearchedImageBinding;
-import io.toru.instagramsearch.detail.DetailActivity;
+import io.toru.instagramsearch.detail.view.DetailActivity;
 import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
 
@@ -20,52 +24,78 @@ import io.toru.instagramsearch.main.model.InstagramModel;
  */
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
+    private static final String TAG = MainAdapter.class.getSimpleName();
 
-    private RowSearchedImageBinding dataBinding;
-    private InstagramModel model;
+    private InstagramModel instagramModel;
+    private ArrayList<InstagramItemModel> itemModelList;
+    private OnInfiniteScrollListener infiniteScrollListener;
+    private String searchedId;
 
-    public MainAdapter(InstagramModel model) {
-        this.model = model;
+    public MainAdapter(OnInfiniteScrollListener infiniteScrollListener) {
+        this.itemModelList = new ArrayList<>();
+        this.infiniteScrollListener = infiniteScrollListener;
+    }
+
+    public void setInstagramModel(String searchedId, InstagramModel instagramModel) {
+        this.searchedId = searchedId;
+        this.instagramModel = instagramModel;
+        this.itemModelList.addAll(new ArrayList<>(Arrays.asList(instagramModel.getItemList())));
+        notifyDataSetChanged();
     }
 
     @Override
     public MainAdapter.MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_searched_image, parent, false);
+        RowSearchedImageBinding dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_searched_image, parent, false);
         return new MainViewHolder(dataBinding);
     }
 
     @Override
     public void onBindViewHolder(MainAdapter.MainViewHolder holder, int position) {
-        holder.bind(model.getItemList()[position]);
+        if(position == getItemCount() - 1){
+            if(infiniteScrollListener != null){
+                infiniteScrollListener.onLoadMore(itemModelList.get(position).getId());
+            }
+        }
+
+        if(instagramModel != null){
+            holder.bind(searchedId, instagramModel, itemModelList.get(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return model.getItemList().length;
+        if(itemModelList == null) {
+            return 0;
+        }
+        return itemModelList.size();
     }
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
+        private static final String TAG = MainViewHolder.class.getSimpleName();
         private final RowSearchedImageBinding binding;
 
         public MainViewHolder(ViewDataBinding viewDataBinding) {
             super(viewDataBinding.getRoot());
             binding = (RowSearchedImageBinding)viewDataBinding;
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
-                            binding.getInstagramModel()));
-                }
-            });
         }
 
         public RowSearchedImageBinding getBinding() {
             return binding;
         }
 
-        public void bind(InstagramItemModel model) {
+        public void bind(final String searchedID, final InstagramModel totalModel, final InstagramItemModel model) {
+            binding.setSearchedID(searchedID);
+            binding.setInstagramTotalModel(totalModel);
             binding.setInstagramModel(model);
             binding.executePendingBindings();
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
+                            binding.getSearchedID(), binding.getInstagramTotalModel()));
+                }
+            });
+
             loadImage();
         }
 

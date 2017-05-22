@@ -32,13 +32,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     private String searchedId;
 
     public MainAdapter(OnInfiniteScrollListener infiniteScrollListener) {
+        this.itemModelList = new ArrayList<>();
         this.infiniteScrollListener = infiniteScrollListener;
     }
 
     public void setInstagramModel(String searchedId, InstagramModel instagramModel) {
         this.searchedId = searchedId;
         this.instagramModel = instagramModel;
-        this.itemModelList = new ArrayList<>(Arrays.asList(instagramModel.getItemList()));
+        this.itemModelList.addAll(new ArrayList<>(Arrays.asList(instagramModel.getItemList())));
         notifyDataSetChanged();
     }
 

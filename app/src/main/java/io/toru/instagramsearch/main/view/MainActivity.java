@@ -26,7 +26,6 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
 
     private String instagramQuery;
     private InstagramModel instagramModel;
-    private ArrayList<InstagramItemModel> itemModelList;
 
     private MainAdapter mainAdapter;
 
@@ -42,7 +41,6 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
 
     @Override
     public void initInstances() {
-        itemModelList = new ArrayList<>();
         presenter = new MainPresenterImpl(this);
         mainBinding = (ActivityMainBinding)binding;
         mainBinding.toolbarMain.inflateMenu(R.menu.search_menu);
@@ -56,7 +54,6 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
                 instagramQuery = query;
                 searchView.clearFocus();
                 instagramModel = null;
-                itemModelList.clear();
                 presenter.onCallNetwork(query);
                 return true;
             }
@@ -92,7 +89,6 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
     public void onUpdateInstagramList(InstagramModel model){
         instagramModel = model;
         mainAdapter.setInstagramModel(instagramQuery, model);
-        itemModelList.addAll(Util.convertArrayToList(model.getItemList()));
         mainAdapter.notifyDataSetChanged();
     }
 

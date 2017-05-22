@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import io.toru.instagramsearch.R;
@@ -52,7 +53,7 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
 
         searchedId = getIntent().getStringExtra("searched_id");
         model = getIntent().getParcelableExtra("total_model");
-        adapter = new DetailAdapter(model);
+        adapter = new DetailAdapter(model, this);
 
         if(model != null){
             activityDetailBinding.rcvDetail.setLayoutManager(new LinearLayoutManager(getCurrentActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -74,12 +75,13 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
     @Override
     public void onLoadMore(String lastImageId) {
         if(model.isMoreAvailable()){
+            Log.w(TAG, "last image id: " + lastImageId);
             presenter.onCallMoreList(searchedId, lastImageId);
         }
     }
 
     @Override
     public void onUpdateInstagramList(InstagramModel instagramModel) {
-
+        adapter.setInstagramModel(model);
     }
 }

@@ -44,6 +44,11 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
         this.infiniteScrollListener = infiniteScrollListener;
     }
 
+    public void setInstagramModel(InstagramModel model){
+        itemModelList.addAll(new ArrayList<>(Arrays.asList(model.getItemList())));
+        notifyDataSetChanged();
+    }
+
     @Override
     public DetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RowSelectedImageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
@@ -55,7 +60,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
     public void onBindViewHolder(DetailViewHolder holder, int position) {
         if(position == getItemCount() - 1){
             if(infiniteScrollListener != null){
-                infiniteScrollListener.onLoadMore(holder.getBinding().getInstagramModel().getId());
+                infiniteScrollListener.onLoadMore(itemModelList.get(position).getId());
             }
         }
 

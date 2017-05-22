@@ -13,6 +13,7 @@ import io.toru.instagramsearch.databinding.ActivityDetailBinding;
 import io.toru.instagramsearch.detail.presenter.DetailPresenterImpl;
 import io.toru.instagramsearch.detail.presenter.DetailTask;
 import io.toru.instagramsearch.main.model.InstagramModel;
+import io.toru.instagramsearch.util.Constant;
 
 /**
  * Created by wonyoung on 2017. 5. 22..
@@ -32,8 +33,8 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
     public static Intent getDetailActivityIntent(Context ctx, String searchedId, InstagramModel model){
         return new Intent(ctx, DetailActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra("searched_id", searchedId)
-                .putExtra("total_model", model);
+                .putExtra(Constant.KEY_MODEL_SEARCHED_ID, searchedId)
+                .putExtra(Constant.KEY_MODEL_LIST, model);
     }
 
     @Override
@@ -51,8 +52,8 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
         activityDetailBinding = (ActivityDetailBinding) binding;
         presenter = new DetailPresenterImpl(this);
 
-        searchedId = getIntent().getStringExtra("searched_id");
-        model = getIntent().getParcelableExtra("total_model");
+        searchedId = getIntent().getStringExtra(Constant.KEY_MODEL_SEARCHED_ID);
+        model = getIntent().getParcelableExtra(Constant.KEY_MODEL_LIST);
         adapter = new DetailAdapter(model, this);
 
         if(model != null){

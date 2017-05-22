@@ -1,4 +1,4 @@
-package io.toru.instagramsearch.detail;
+package io.toru.instagramsearch.detail.view;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;

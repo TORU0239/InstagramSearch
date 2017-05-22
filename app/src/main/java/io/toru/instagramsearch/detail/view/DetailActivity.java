@@ -1,22 +1,16 @@
-package io.toru.instagramsearch.detail;
+package io.toru.instagramsearch.detail.view;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
 
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityDetailBinding;
 import io.toru.instagramsearch.detail.presenter.DetailPresenterImpl;
 import io.toru.instagramsearch.detail.presenter.DetailTask;
-import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
 
 /**

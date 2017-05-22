@@ -15,7 +15,7 @@ import java.util.Arrays;
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.listener.OnInfiniteScrollListener;
 import io.toru.instagramsearch.databinding.RowSearchedImageBinding;
-import io.toru.instagramsearch.detail.DetailActivity;
+import io.toru.instagramsearch.detail.view.DetailActivity;
 import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
 

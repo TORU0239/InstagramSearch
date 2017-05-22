@@ -10,7 +10,7 @@ import io.toru.instagramsearch.main.model.InstagramModel;
 
 public interface MainTask {
     interface MainView extends BaseView, OnInfiniteScrollListener {
-        void onUpdateInstagramList(InstagramModel instagramModel);
+        void onUpdateInstagramList(InstagramModel instagramModel, boolean clear);
     }
 
     interface MainPresenter{

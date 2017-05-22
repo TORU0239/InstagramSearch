@@ -86,9 +86,9 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
     }
 
     @Override
-    public void onUpdateInstagramList(InstagramModel model){
+    public void onUpdateInstagramList(InstagramModel model, boolean clear){
         instagramModel = model;
-        mainAdapter.setInstagramModel(instagramQuery, model);
+        mainAdapter.setInstagramModel(instagramQuery, model, clear);
         mainAdapter.notifyDataSetChanged();
     }
 

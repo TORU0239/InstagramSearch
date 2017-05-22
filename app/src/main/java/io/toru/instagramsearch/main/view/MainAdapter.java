@@ -9,7 +9,11 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import io.toru.instagramsearch.R;
+import io.toru.instagramsearch.base.listener.OnInfiniteScrollListener;
 import io.toru.instagramsearch.databinding.RowSearchedImageBinding;
 import io.toru.instagramsearch.detail.DetailActivity;
 import io.toru.instagramsearch.main.model.InstagramItemModel;
@@ -22,10 +26,18 @@ import io.toru.instagramsearch.main.model.InstagramModel;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
 
     private RowSearchedImageBinding dataBinding;
-    private InstagramModel model;
 
-    public MainAdapter(InstagramModel model) {
-        this.model = model;
+    private ArrayList<InstagramItemModel> itemModelList;
+    private OnInfiniteScrollListener infiniteScrollListener;
+
+
+    public MainAdapter(ArrayList<InstagramItemModel> itemModelList, OnInfiniteScrollListener infiniteScrollListener) {
+        this.itemModelList = itemModelList;
+        this.infiniteScrollListener = infiniteScrollListener;
+    }
+
+    public void setInfiniteScrollListener(OnInfiniteScrollListener infiniteScrollListener) {
+        this.infiniteScrollListener = infiniteScrollListener;
     }
 
     @Override
@@ -36,12 +48,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(MainAdapter.MainViewHolder holder, int position) {
-        holder.bind(model.getItemList()[position]);
+        if(position == getItemCount() - 1){
+            if(infiniteScrollListener != null){
+                infiniteScrollListener.onLoadMore(itemModelList.get(position).getId());
+            }
+        }
+
+        holder.bind(itemModelList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return model.getItemList().length;
+        return itemModelList.size();
     }
 
     static class MainViewHolder extends RecyclerView.ViewHolder {

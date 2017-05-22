@@ -1,5 +1,6 @@
 package io.toru.instagramsearch.main.presenter;
 
+import io.toru.instagramsearch.base.listener.OnInfiniteScrollListener;
 import io.toru.instagramsearch.base.view.BaseView;
 import io.toru.instagramsearch.main.model.InstagramModel;
 
@@ -8,11 +9,12 @@ import io.toru.instagramsearch.main.model.InstagramModel;
  */
 
 public interface MainTask {
-    interface MainView extends BaseView{
+    interface MainView extends BaseView, OnInfiniteScrollListener {
         void onUpdateInstagramList(InstagramModel instagramModel);
     }
 
     interface MainPresenter{
         void onCallNetwork(String id);
+        void onCallMoreList(String instagramId, String lastImageId);
     }
 }

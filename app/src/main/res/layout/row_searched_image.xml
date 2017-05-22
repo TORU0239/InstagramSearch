@@ -9,6 +9,10 @@
         <variable
             name="instagramModel"
             type="io.toru.instagramsearch.main.model.InstagramItemModel"/>
+
+        <variable
+            name="searchedID"
+            type="String"/>
     </data>
 
     <RelativeLayout

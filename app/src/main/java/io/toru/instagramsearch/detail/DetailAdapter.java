@@ -3,9 +3,7 @@ package io.toru.instagramsearch.detail;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.toru.instagramsearch.R;
+import io.toru.instagramsearch.base.listener.OnInfiniteScrollListener;
 import io.toru.instagramsearch.databinding.RowSelectedImageBinding;
 import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
@@ -28,11 +27,21 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
     private InstagramModel model;
     private ArrayList<InstagramItemModel> itemModelList;
 
+    private OnInfiniteScrollListener infiniteScrollListener;
+
     public DetailAdapter(InstagramModel model) {
         this.model = model;
         if(model.getItemList() != null){
             itemModelList = new ArrayList<>(Arrays.asList(model.getItemList()));
         }
+    }
+
+    public DetailAdapter(InstagramModel model, OnInfiniteScrollListener infiniteScrollListener) {
+        this.model = model;
+        if(model.getItemList() != null){
+            itemModelList = new ArrayList<>(Arrays.asList(model.getItemList()));
+        }
+        this.infiniteScrollListener = infiniteScrollListener;
     }
 
     @Override
@@ -44,6 +53,12 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
 
     @Override
     public void onBindViewHolder(DetailViewHolder holder, int position) {
+        if(position == getItemCount() - 1){
+            if(infiniteScrollListener != null){
+                infiniteScrollListener.onLoadMore(holder.getBinding().getInstagramModel().getId());
+            }
+        }
+
         holder.bind(itemModelList.get(position));
     }
 
@@ -53,7 +68,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
     }
 
     static class DetailViewHolder extends RecyclerView.ViewHolder{
-        RowSelectedImageBinding binding;
+        public RowSelectedImageBinding binding;
 
         public DetailViewHolder(ViewDataBinding viewDataBinding) {
             super(viewDataBinding.getRoot());
@@ -64,6 +79,10 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
             binding.setInstagramModel(itemModel);
             binding.executePendingBindings();
             loadImage();
+        }
+
+        public RowSelectedImageBinding getBinding() {
+            return binding;
         }
 
         private void loadImage(){

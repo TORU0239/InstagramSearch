@@ -1,10 +1,8 @@
 package io.toru.instagramsearch.main.view;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +29,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     private InstagramModel instagramModel;
     private ArrayList<InstagramItemModel> itemModelList;
     private OnInfiniteScrollListener infiniteScrollListener;
+    private String searchedId;
 
     public MainAdapter(OnInfiniteScrollListener infiniteScrollListener) {
         this.infiniteScrollListener = infiniteScrollListener;
     }
 
-    public void setInstagramModel(InstagramModel instagramModel) {
+    public void setInstagramModel(String searchedId, InstagramModel instagramModel) {
+        this.searchedId = searchedId;
         this.instagramModel = instagramModel;
         this.itemModelList = new ArrayList<>(Arrays.asList(instagramModel.getItemList()));
         notifyDataSetChanged();
@@ -57,7 +57,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         }
 
         if(instagramModel != null){
-            holder.bind(instagramModel, itemModelList.get(position));
+            holder.bind(searchedId, instagramModel, itemModelList.get(position));
         }
     }
 
@@ -82,7 +82,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
             return binding;
         }
 
-        public void bind(final InstagramModel totalModel, final InstagramItemModel model) {
+        public void bind(final String searchedID, final InstagramModel totalModel, final InstagramItemModel model) {
+            binding.setSearchedID(searchedID);
             binding.setInstagramTotalModel(totalModel);
             binding.setInstagramModel(model);
             binding.executePendingBindings();
@@ -90,7 +91,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
                 @Override
                 public void onClick(View v) {
                     v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
-                            binding.getInstagramTotalModel()));
+                            binding.getSearchedID(), binding.getInstagramTotalModel()));
                 }
             });
 

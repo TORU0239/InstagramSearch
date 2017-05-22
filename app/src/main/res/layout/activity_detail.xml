@@ -9,14 +9,5 @@
             android:id="@+id/rcv_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-        <!--<ImageView-->
-            <!--android:id="@+id/img_detail"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:adjustViewBounds="true"/>-->
-
     </RelativeLayout>
 </layout>

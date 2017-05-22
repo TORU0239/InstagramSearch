@@ -45,20 +45,15 @@ public class DetailActivity extends BaseActivity {
     @Override
     public void initInstances() {
         activityDetailBinding = (ActivityDetailBinding) binding;
-//        InstagramModel model = getIntent().getParcelableExtra("total_model");
-//
-//        Log.w(TAG, "model count:: " + model.getStatus());
-//        Log.w(TAG, "model count:: " + model.isMoreAvailable());
-//        Log.w(TAG, "model count:: " + model.getItemList().length);
+        InstagramModel model = getIntent().getParcelableExtra("total_model");
 
-        ArrayList<InstagramItemModel> modelArrayList = getIntent().getParcelableArrayListExtra("models");
-        Log.w(TAG, "model array list size : " + modelArrayList.size());
+        Log.w(TAG, "model count:: " + model.getStatus());
+        Log.w(TAG, "model count:: " + model.isMoreAvailable());
+        Log.w(TAG, "model count:: " + model.getItemList().length);
 
-
-
-//        if(model != null){
-//            activityDetailBinding.rcvDetail.setLayoutManager(new LinearLayoutManager(getCurrentActivity(), LinearLayoutManager.HORIZONTAL, false));
-//            activityDetailBinding.rcvDetail.setAdapter(new DetailAdapter(model));
-//        }
+        if(model != null){
+            activityDetailBinding.rcvDetail.setLayoutManager(new LinearLayoutManager(getCurrentActivity(), LinearLayoutManager.HORIZONTAL, false));
+            activityDetailBinding.rcvDetail.setAdapter(new DetailAdapter(model));
+        }
     }
 }

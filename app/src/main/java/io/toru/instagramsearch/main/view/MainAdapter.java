@@ -89,13 +89,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
-//                            binding.getInstagramTotalModel()));
-                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
-
-                    ArrayList<InstagramItemModel> modelList = new ArrayList<InstagramItemModel>(Arrays.asList(binding.getInstagramTotalModel().getItemList()));
-                    intent.putExtra("models", modelList);
-                    v.getContext().startActivity(intent);
+                    v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
+                            binding.getInstagramTotalModel()));
                 }
             });
 

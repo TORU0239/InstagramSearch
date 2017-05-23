@@ -91,6 +91,11 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
     }
 
     @Override
+    public void onShowToast(int strId) {
+        Toast.makeText(getCurrentActivity(), strId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onShowProgressDialog() {
         activityDetailBinding.rlProgressbar.setVisibility(View.VISIBLE);
     }

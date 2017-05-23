@@ -2,7 +2,10 @@ package io.toru.instagramsearch.main.presenter;
 
 import android.util.Log;
 
+import javax.inject.Inject;
+
 import io.toru.instagramsearch.R;
+import io.toru.instagramsearch.app.InstagramSearchApplication;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.network.ConnectionInstagram;
 import io.toru.instagramsearch.util.Constant;
@@ -22,34 +25,23 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
     private static final String TAG = MainPresenterImpl.class.getSimpleName();
     private MainTask.MainView mainView;
 
-    private Retrofit retrofit;
+    @Inject
+    Retrofit retrofit;
+
+//    @Inject
+//    ConnectionInstagram instagramService;
 
     public MainPresenterImpl(MainTask.MainView mainView) {
         this.mainView = mainView;
-        initRetrofit();
-    }
-
-    private void initRetrofit(){
-        if(retrofit == null){
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.addInterceptor(loggingInterceptor);
-
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(Constant.INSTAGRAM_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClient.build())
-                    .build();
-        }
+        InstagramSearchApplication.getApplication().getMainComponent().injectMain(this);
     }
 
     @Override
     public void onCallNetwork(String id) {
         mainView.onShowProgressDialog();
 
-        ConnectionInstagram service = retrofit.create(ConnectionInstagram.class);
-        Call<InstagramModel> itemModelCall = service.getModel(id);
+        ConnectionInstagram instagramService = retrofit.create(ConnectionInstagram.class);
+        Call<InstagramModel> itemModelCall = instagramService.getModel(id);
         itemModelCall.enqueue(new Callback<InstagramModel>() {
             @Override
             public void onResponse(Call<InstagramModel> call, Response<InstagramModel> response) {
@@ -92,8 +84,8 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
     public void onCallMoreList(String instagramId, String lastImageId) {
         mainView.onShowProgressDialog();
 
-        ConnectionInstagram service = retrofit.create(ConnectionInstagram.class);
-        Call<InstagramModel> callImagesFromLastImageId = service.getModelWithMaxId(instagramId, lastImageId);
+        ConnectionInstagram instagramService = retrofit.create(ConnectionInstagram.class);
+        Call<InstagramModel> callImagesFromLastImageId = instagramService.getModelWithMaxId(instagramId, lastImageId);
         callImagesFromLastImageId.enqueue(new Callback<InstagramModel>() {
             @Override
             public void onResponse(Call<InstagramModel> call, Response<InstagramModel> response) {

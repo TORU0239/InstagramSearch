@@ -44,6 +44,7 @@ public class DetailPresenterImpl implements DetailTask.DetailPresenter {
 
     @Override
     public void onCallMoreList(String instagramId, String lastImageId) {
+        view.onShowProgressDialog();
         ConnectionInstagram service = retrofit.create(ConnectionInstagram.class);
         Call<InstagramModel> callImagesFromLastImageId = service.getModelWithMaxId(instagramId, lastImageId);
         callImagesFromLastImageId.enqueue(new Callback<InstagramModel>() {
@@ -51,9 +52,6 @@ public class DetailPresenterImpl implements DetailTask.DetailPresenter {
             public void onResponse(Call<InstagramModel> call, Response<InstagramModel> response) {
                 Log.w(TAG, response.message());
                 if(response.isSuccessful()){
-                    Log.w(TAG, "success");
-                    Log.w(TAG, "itemList :: " + response.body().getItemList().length
-                            + ", status: " + response.body().getStatus());
                     // 결과를 받아서 뷰를 업데이트해 준다
                     view.onHideProgressDialog();
 

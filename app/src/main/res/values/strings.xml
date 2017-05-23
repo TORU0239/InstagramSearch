@@ -5,7 +5,7 @@
     <string name="main_search_id">ID Search</string>
     <string name="main_searched_image_like_cnt" translatable="false">%s likes</string>
 
-    <string name="no_data">관련된 데이터가 없습니다.</string>
-    <string name="failed_to_server_response">서버에서 응답을 받아오는 데 실패했습니다.</string>
+    <string name="no_data">No Data.</string>
+    <string name="failed_to_server_response">Failed to get response.</string>
 
 </resources>

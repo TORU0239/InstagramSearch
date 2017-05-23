@@ -29,7 +29,6 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
     private InstagramModel model;
     private DetailAdapter adapter;
 
-
     public static Intent getDetailActivityIntent(Context ctx, String searchedId, InstagramModel model){
         return new Intent(ctx, DetailActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)

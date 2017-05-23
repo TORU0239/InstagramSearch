@@ -62,7 +62,7 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
                     mainView.onHideProgressDialog();
 
                     try {
-                        mainView.onUpdateInstagramList(response.body());
+                        mainView.onUpdateInstagramList(response.body(), true);
                     }
                     catch (NullPointerException e){
                         e.printStackTrace();
@@ -101,7 +101,7 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
                     mainView.onHideProgressDialog();
 
                     try {
-                        mainView.onUpdateInstagramList(response.body());
+                        mainView.onUpdateInstagramList(response.body(), false);
                     }
                     catch (NullPointerException e){
                         e.printStackTrace();

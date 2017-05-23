@@ -5,4 +5,7 @@
     <string name="main_search_id">ID Search</string>
     <string name="main_searched_image_like_cnt" translatable="false">%s likes</string>
 
+    <string name="no_data">No Data.</string>
+    <string name="failed_to_server_response">Failed to get response.</string>
+
 </resources>

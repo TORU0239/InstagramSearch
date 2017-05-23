@@ -37,8 +37,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     }
 
     public void setInstagramModel(String searchedId, InstagramModel instagramModel) {
+        setInstagramModel(searchedId, instagramModel, false);
+    }
+
+    public void setInstagramModel(String searchedId, InstagramModel instagramModel, boolean clear){
         this.searchedId = searchedId;
         this.instagramModel = instagramModel;
+        if(clear){
+            this.itemModelList.clear();
+        }
         this.itemModelList.addAll(new ArrayList<>(Arrays.asList(instagramModel.getItemList())));
         notifyDataSetChanged();
     }

@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="instagramTotalModel"
-            type="io.toru.instagramsearch.main.model.InstagramModel"/>
+            name="instagramItemModel"
+            type="io.toru.instagramsearch.main.model.InstagramItemModel"/>
 
         <variable
             name="instagramModel"
-            type="io.toru.instagramsearch.main.model.InstagramItemModel"/>
+            type="io.toru.instagramsearch.main.model.InstagramModel"/>
 
         <variable
             name="searchedID"
@@ -32,7 +32,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:padding="16dp"
-            android:text="@{@string/main_searched_image_like_cnt(instagramModel.likes.count)}"
+            android:text="@{@string/main_searched_image_like_cnt(instagramItemModel.likes.count)}"
             android:textColor="@android:color/white"
             tools:text="test"/>
 

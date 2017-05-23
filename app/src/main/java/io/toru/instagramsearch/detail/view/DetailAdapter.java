@@ -36,6 +36,11 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
         }
     }
 
+    public DetailAdapter(ArrayList<InstagramItemModel> itemModelList, OnInfiniteScrollListener infiniteScrollListener) {
+        this.itemModelList = itemModelList;
+        this.infiniteScrollListener = infiniteScrollListener;
+    }
+
     public DetailAdapter(InstagramModel model, OnInfiniteScrollListener infiniteScrollListener) {
         this.model = model;
         if(model.getItemList() != null){

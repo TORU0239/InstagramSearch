@@ -3,6 +3,7 @@ package io.toru.instagramsearch.main.view;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     @Override
     public MainAdapter.MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RowSearchedImageBinding dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_searched_image, parent, false);
-        return new MainViewHolder(dataBinding);
+        return new MainViewHolder(dataBinding, itemModelList);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         }
 
         if(instagramModel != null){
-            holder.bind(searchedId, instagramModel, itemModelList.get(position));
+            holder.bind(searchedId, itemModelList.get(position), instagramModel);
         }
     }
 
@@ -80,26 +81,29 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     static class MainViewHolder extends RecyclerView.ViewHolder {
         private static final String TAG = MainViewHolder.class.getSimpleName();
         private final RowSearchedImageBinding binding;
+        private ArrayList<InstagramItemModel> itemModelList;
 
-        public MainViewHolder(ViewDataBinding viewDataBinding) {
+        public MainViewHolder(ViewDataBinding viewDataBinding, ArrayList<InstagramItemModel> modelList) {
             super(viewDataBinding.getRoot());
             binding = (RowSearchedImageBinding)viewDataBinding;
+            itemModelList = modelList;
         }
 
         public RowSearchedImageBinding getBinding() {
             return binding;
         }
 
-        public void bind(final String searchedID, final InstagramModel totalModel, final InstagramItemModel model) {
+        public void bind(final String searchedID, final InstagramItemModel itemModel, final InstagramModel model) {
             binding.setSearchedID(searchedID);
-            binding.setInstagramTotalModel(totalModel);
+            binding.setInstagramItemModel(itemModel);
             binding.setInstagramModel(model);
             binding.executePendingBindings();
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.w(TAG, "current id : " + itemModel.getId());
                     v.getContext().startActivity(DetailActivity.getDetailActivityIntent(v.getContext(),
-                            binding.getSearchedID(), binding.getInstagramTotalModel()));
+                            searchedID, itemModelList, model.isMoreAvailable(), itemModel.getId()));
                 }
             });
 
@@ -108,7 +112,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
         private void loadImage(){
             Glide.with(binding.getRoot().getContext())
-                    .load(binding.getInstagramModel().getImages().getStandardResolution().getUrl())
+                    .load(binding.getInstagramItemModel().getImages().getStandardResolution().getUrl())
                     .into(binding.imgSearched);
         }
     }

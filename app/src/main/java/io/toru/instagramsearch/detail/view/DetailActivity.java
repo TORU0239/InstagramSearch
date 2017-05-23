@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityDetailBinding;
 import io.toru.instagramsearch.detail.presenter.DetailPresenterImpl;
 import io.toru.instagramsearch.detail.presenter.DetailTask;
+import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.util.Constant;
 
@@ -26,7 +30,10 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
     private DetailTask.DetailPresenter presenter;
 
     private String searchedId;
-    private InstagramModel model;
+    private boolean isMoreAvailable;
+    private ArrayList<InstagramItemModel> modelList;
+
+
     private DetailAdapter adapter;
 
     public static Intent getDetailActivityIntent(Context ctx, String searchedId, InstagramModel model){
@@ -34,6 +41,17 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 .putExtra(Constant.KEY_MODEL_SEARCHED_ID, searchedId)
                 .putExtra(Constant.KEY_MODEL_LIST, model);
+    }
+
+    public static Intent getDetailActivityIntent(Context ctx, String searchedId, ArrayList<InstagramItemModel> modelList,
+                                                 boolean isMoreAvailable, String modelId){
+        return new Intent(ctx, DetailActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                .putExtra(Constant.KEY_MODEL_SEARCHED_ID, searchedId)
+                .putExtra(Constant.KEY_MODEL_LIST, modelList)
+                .putExtra(Constant.KEY_MODEL_IS_MORE_AVAILABLE, isMoreAvailable)
+                .putExtra(Constant.KEY_MODEL_CURRENT_ITEM_ID, modelId);
+
     }
 
     @Override
@@ -52,13 +70,24 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
         presenter = new DetailPresenterImpl(this);
 
         searchedId = getIntent().getStringExtra(Constant.KEY_MODEL_SEARCHED_ID);
-        model = getIntent().getParcelableExtra(Constant.KEY_MODEL_LIST);
-        adapter = new DetailAdapter(model, this);
+        modelList = getIntent().getParcelableArrayListExtra(Constant.KEY_MODEL_LIST);
+        String id = getIntent().getStringExtra(Constant.KEY_MODEL_CURRENT_ITEM_ID);
+        adapter = new DetailAdapter(modelList, this);
 
-        if(model != null){
-            activityDetailBinding.rcvDetail.setLayoutManager(new LinearLayoutManager(getCurrentActivity(), LinearLayoutManager.HORIZONTAL, false));
-            activityDetailBinding.rcvDetail.setAdapter(adapter);
+        activityDetailBinding.rcvDetail.setLayoutManager(new LinearLayoutManager(getCurrentActivity(), LinearLayoutManager.HORIZONTAL, false));
+        activityDetailBinding.rcvDetail.setAdapter(adapter);
+        activityDetailBinding.rcvDetail.getLayoutManager().scrollToPosition(getCurrentPosition(id));
+    }
+
+    private int getCurrentPosition(String id){
+        int position = 0;
+        for(InstagramItemModel model : modelList){
+            if(model.getId().equals(id)){
+                break;
+            }
+            position++;
         }
+        return position;
     }
 
     @Override
@@ -74,14 +103,13 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
 
     @Override
     public void onLoadMore(String lastImageId) {
-        if(model.isMoreAvailable()){
-            Log.w(TAG, "last image id: " + lastImageId);
-            presenter.onCallMoreList(searchedId, lastImageId);
-        }
+        Log.w(TAG, "last image id: " + lastImageId);
+        presenter.onCallMoreList(searchedId, lastImageId);
     }
 
+    // 얘는 Load More 시에만 호출된다.
     @Override
     public void onUpdateInstagramList(InstagramModel instagramModel) {
-        adapter.setInstagramModel(model);
+//        adapter.setInstagramModel(model);
     }
 }

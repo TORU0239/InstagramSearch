@@ -6,6 +6,7 @@ package io.toru.instagramsearch.base.view;
 
 public interface BaseView {
     void onShowToast(String str);
+    void onShowToast(int strId);
     void onShowProgressDialog();
     void onHideProgressDialog();
 }

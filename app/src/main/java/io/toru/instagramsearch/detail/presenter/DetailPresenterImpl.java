@@ -2,6 +2,7 @@ package io.toru.instagramsearch.detail.presenter;
 
 import android.util.Log;
 
+import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.network.ConnectionInstagram;
 import io.toru.instagramsearch.util.Constant;
@@ -44,6 +45,7 @@ public class DetailPresenterImpl implements DetailTask.DetailPresenter {
 
     @Override
     public void onCallMoreList(String instagramId, String lastImageId) {
+        view.onShowProgressDialog();
         ConnectionInstagram service = retrofit.create(ConnectionInstagram.class);
         Call<InstagramModel> callImagesFromLastImageId = service.getModelWithMaxId(instagramId, lastImageId);
         callImagesFromLastImageId.enqueue(new Callback<InstagramModel>() {
@@ -51,24 +53,26 @@ public class DetailPresenterImpl implements DetailTask.DetailPresenter {
             public void onResponse(Call<InstagramModel> call, Response<InstagramModel> response) {
                 Log.w(TAG, response.message());
                 if(response.isSuccessful()){
-                    Log.w(TAG, "success");
-                    Log.w(TAG, "itemList :: " + response.body().getItemList().length
-                            + ", status: " + response.body().getStatus());
                     // 결과를 받아서 뷰를 업데이트해 준다
                     view.onHideProgressDialog();
 
                     try {
-                        view.onUpdateInstagramList(response.body());
+                        if(response.body().getItemList().length > 0){
+                            view.onUpdateInstagramList(response.body());
+                        }
+                        else{
+                            view.onShowToast(R.string.no_data);
+                        }
                     }
                     catch (NullPointerException e){
                         e.printStackTrace();
-                        view.onShowToast("관련된 데이터가 없습니다.");
+                        view.onShowToast(R.string.no_data);
                     }
                 }
                 else{
                     Log.w(TAG, "failed! " + response.code());
                     view.onHideProgressDialog();
-                    view.onShowToast("서버에서 응답을 받아오는 데 실패했습니다.");
+                    view.onShowToast(R.string.failed_to_server_response);
                 }
             }
 

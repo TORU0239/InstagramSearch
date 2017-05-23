@@ -76,6 +76,11 @@ public class MainActivity extends BaseActivity implements MainTask.MainView{
     }
 
     @Override
+    public void onShowToast(int strId) {
+        Toast.makeText(getCurrentActivity(), strId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onShowProgressDialog() {
         mainBinding.rlMainProgressbar.setVisibility(View.VISIBLE);
     }

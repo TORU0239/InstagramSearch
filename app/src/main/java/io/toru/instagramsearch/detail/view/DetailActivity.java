@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import io.toru.instagramsearch.BuildConfig;
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityDetailBinding;
@@ -31,17 +32,10 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
 
     private String searchedId;
     private boolean isMoreAvailable;
-    private ArrayList<InstagramItemModel> modelList;
 
-
+    private InstagramModel model;
+    private ArrayList<InstagramItemModel> itemModelList;
     private DetailAdapter adapter;
-
-    public static Intent getDetailActivityIntent(Context ctx, String searchedId, InstagramModel model){
-        return new Intent(ctx, DetailActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra(Constant.KEY_MODEL_SEARCHED_ID, searchedId)
-                .putExtra(Constant.KEY_MODEL_LIST, model);
-    }
 
     public static Intent getDetailActivityIntent(Context ctx, String searchedId, ArrayList<InstagramItemModel> modelList,
                                                  boolean isMoreAvailable, String modelId){
@@ -70,9 +64,10 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
         presenter = new DetailPresenterImpl(this);
 
         searchedId = getIntent().getStringExtra(Constant.KEY_MODEL_SEARCHED_ID);
-        modelList = getIntent().getParcelableArrayListExtra(Constant.KEY_MODEL_LIST);
+        itemModelList = getIntent().getParcelableArrayListExtra(Constant.KEY_MODEL_LIST);
+        isMoreAvailable = getIntent().getBooleanExtra(Constant.KEY_MODEL_IS_MORE_AVAILABLE, true);
         String id = getIntent().getStringExtra(Constant.KEY_MODEL_CURRENT_ITEM_ID);
-        adapter = new DetailAdapter(modelList, this);
+        adapter = new DetailAdapter(itemModelList, this);
 
         activityDetailBinding.rcvDetail.setLayoutManager(new LinearLayoutManager(getCurrentActivity(), LinearLayoutManager.HORIZONTAL, false));
         activityDetailBinding.rcvDetail.setAdapter(adapter);
@@ -81,7 +76,7 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
 
     private int getCurrentPosition(String id){
         int position = 0;
-        for(InstagramItemModel model : modelList){
+        for(InstagramItemModel model : itemModelList){
             if(model.getId().equals(id)){
                 break;
             }
@@ -96,20 +91,40 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
     }
 
     @Override
-    public void onShowProgressDialog() {}
+    public void onShowToast(int strId) {
+        Toast.makeText(getCurrentActivity(), strId, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
-    public void onHideProgressDialog() {}
+    public void onShowProgressDialog() {
+        activityDetailBinding.rlProgressbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onHideProgressDialog() {
+        activityDetailBinding.rlProgressbar.setVisibility(View.GONE);
+    }
 
     @Override
     public void onLoadMore(String lastImageId) {
-        Log.w(TAG, "last image id: " + lastImageId);
-        presenter.onCallMoreList(searchedId, lastImageId);
+        if(BuildConfig.DEBUG){
+            Log.w(TAG, "last image id: " + lastImageId);
+        }
+
+        if(model == null){
+            if(isMoreAvailable){
+                presenter.onCallMoreList(searchedId, lastImageId);
+            }
+        }
+        else if(model.isMoreAvailable()){
+            presenter.onCallMoreList(searchedId, lastImageId);
+        }
     }
 
     // 얘는 Load More 시에만 호출된다.
     @Override
     public void onUpdateInstagramList(InstagramModel instagramModel) {
-//        adapter.setInstagramModel(model);
+        model = instagramModel;
+        adapter.setInstagramModel(instagramModel);
     }
 }

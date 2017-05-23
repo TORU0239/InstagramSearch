@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import io.toru.instagramsearch.BuildConfig;
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityDetailBinding;
@@ -64,6 +65,7 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
 
         searchedId = getIntent().getStringExtra(Constant.KEY_MODEL_SEARCHED_ID);
         itemModelList = getIntent().getParcelableArrayListExtra(Constant.KEY_MODEL_LIST);
+        isMoreAvailable = getIntent().getBooleanExtra(Constant.KEY_MODEL_IS_MORE_AVAILABLE, true);
         String id = getIntent().getStringExtra(Constant.KEY_MODEL_CURRENT_ITEM_ID);
         adapter = new DetailAdapter(itemModelList, this);
 
@@ -100,13 +102,24 @@ public class DetailActivity extends BaseActivity implements DetailTask.DetailVie
 
     @Override
     public void onLoadMore(String lastImageId) {
-        Log.w(TAG, "last image id: " + lastImageId);
-        presenter.onCallMoreList(searchedId, lastImageId);
+        if(BuildConfig.DEBUG){
+            Log.w(TAG, "last image id: " + lastImageId);
+        }
+
+        if(model == null){
+            if(isMoreAvailable){
+                presenter.onCallMoreList(searchedId, lastImageId);
+            }
+        }
+        else if(model.isMoreAvailable()){
+            presenter.onCallMoreList(searchedId, lastImageId);
+        }
     }
 
     // 얘는 Load More 시에만 호출된다.
     @Override
     public void onUpdateInstagramList(InstagramModel instagramModel) {
+        model = instagramModel;
         adapter.setInstagramModel(instagramModel);
     }
 }

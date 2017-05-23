@@ -4,7 +4,7 @@ import android.app.Application;
 
 import io.toru.instagramsearch.di.component.DaggerMainComponent;
 import io.toru.instagramsearch.di.component.MainComponent;
-import io.toru.instagramsearch.di.module.MainModule;
+import io.toru.instagramsearch.di.module.NetworkModule;
 
 /**
  * Created by wonyoung on 2017. 5. 23..
@@ -29,7 +29,7 @@ public class InstagramSearchApplication extends Application {
 
     private void initDependencyInjection(){
         mainComponent = DaggerMainComponent.builder()
-                .mainModule(new MainModule())
+                .networkModule(new NetworkModule())
                 .build();
     }
 

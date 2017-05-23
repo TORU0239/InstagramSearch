@@ -1,9 +1,5 @@
 package io.toru.instagramsearch.di.module;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.toru.instagramsearch.network.ConnectionInstagram;
@@ -17,16 +13,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by wonyoung on 2017. 5. 23..
  */
 
-@Singleton
 @Module
-public class MainModule {
-    private static final String TAG = MainModule.class.getSimpleName();
+public class NetworkModule {
 
-    public MainModule() {}
-
-    @Singleton
     @Provides
-    public Retrofit injectRetrofit(){
+    public Retrofit retrofit(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -39,9 +30,8 @@ public class MainModule {
                 .build();
     }
 
-//    @Singleton
-//    @Provides
-//    public ConnectionInstagram getConnectionInstagram(@Named("inject_retrofit") Retrofit retrofit){
-//        return retrofit.create(ConnectionInstagram.class);
-//    }
+    @Provides
+    public ConnectionInstagram connectionInstagram(Retrofit retrofit){
+        return retrofit.create(ConnectionInstagram.class);
+    }
 }

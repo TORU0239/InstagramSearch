@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.app.InstagramSearchApplication;
+import io.toru.instagramsearch.di.module.NetworkModule;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.network.ConnectionInstagram;
 import io.toru.instagramsearch.util.Constant;
@@ -26,21 +27,18 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
     private MainTask.MainView mainView;
 
     @Inject
-    Retrofit retrofit;
-
-//    @Inject
-//    ConnectionInstagram instagramService;
+    ConnectionInstagram instagramService;
 
     public MainPresenterImpl(MainTask.MainView mainView) {
         this.mainView = mainView;
-        InstagramSearchApplication.getApplication().getMainComponent().injectMain(this);
+        MainPresenterComponent component = DaggerMainPresenterComponent.builder().networkModule(new NetworkModule()).build();
+        component.injectMainPresenter(this);
     }
 
     @Override
     public void onCallNetwork(String id) {
         mainView.onShowProgressDialog();
 
-        ConnectionInstagram instagramService = retrofit.create(ConnectionInstagram.class);
         Call<InstagramModel> itemModelCall = instagramService.getModel(id);
         itemModelCall.enqueue(new Callback<InstagramModel>() {
             @Override
@@ -83,8 +81,7 @@ public class MainPresenterImpl implements MainTask.MainPresenter {
     @Override
     public void onCallMoreList(String instagramId, String lastImageId) {
         mainView.onShowProgressDialog();
-
-        ConnectionInstagram instagramService = retrofit.create(ConnectionInstagram.class);
+        
         Call<InstagramModel> callImagesFromLastImageId = instagramService.getModelWithMaxId(instagramId, lastImageId);
         callImagesFromLastImageId.enqueue(new Callback<InstagramModel>() {
             @Override

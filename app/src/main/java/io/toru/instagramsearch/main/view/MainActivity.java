@@ -7,16 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import io.toru.instagramsearch.R;
 import io.toru.instagramsearch.base.view.BaseActivity;
 import io.toru.instagramsearch.databinding.ActivityMainBinding;
-import io.toru.instagramsearch.main.model.InstagramItemModel;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.main.presenter.MainPresenterImpl;
 import io.toru.instagramsearch.main.presenter.MainTask;
-import io.toru.instagramsearch.util.Util;
 
 public class MainActivity extends BaseActivity implements MainTask.MainView{
     private static final String TAG = MainActivity.class.getSimpleName();

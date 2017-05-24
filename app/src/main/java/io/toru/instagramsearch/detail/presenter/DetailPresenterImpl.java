@@ -2,7 +2,10 @@ package io.toru.instagramsearch.detail.presenter;
 
 import android.util.Log;
 
+import javax.inject.Inject;
+
 import io.toru.instagramsearch.R;
+import io.toru.instagramsearch.di.module.NetworkModule;
 import io.toru.instagramsearch.main.model.InstagramModel;
 import io.toru.instagramsearch.network.ConnectionInstagram;
 import io.toru.instagramsearch.util.Constant;
@@ -21,33 +24,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DetailPresenterImpl implements DetailTask.DetailPresenter {
     private static final String TAG = DetailPresenterImpl.class.getSimpleName();
     private DetailTask.DetailView view;
-    private Retrofit retrofit;
+
+    @Inject
+    ConnectionInstagram instagramService;
 
     public DetailPresenterImpl(DetailTask.DetailView view) {
         this.view = view;
-        initRetrofit();
-    }
-
-    private void initRetrofit(){
-        if(retrofit == null){
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.addInterceptor(loggingInterceptor);
-
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(Constant.INSTAGRAM_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClient.build())
-                    .build();
-        }
+        DaggerDetailPresenterComponent.builder().networkModule(new NetworkModule()).build().injectDetailPresenter(this);
     }
 
     @Override
     public void onCallMoreList(String instagramId, String lastImageId) {
         view.onShowProgressDialog();
-        ConnectionInstagram service = retrofit.create(ConnectionInstagram.class);
-        Call<InstagramModel> callImagesFromLastImageId = service.getModelWithMaxId(instagramId, lastImageId);
+        Call<InstagramModel> callImagesFromLastImageId = instagramService.getModelWithMaxId(instagramId, lastImageId);
         callImagesFromLastImageId.enqueue(new Callback<InstagramModel>() {
             @Override
             public void onResponse(Call<InstagramModel> call, Response<InstagramModel> response) {

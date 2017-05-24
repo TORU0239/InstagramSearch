@@ -17,6 +17,7 @@ Author: Wonyoung Choi, 최원영
 ```
 - MVP
 - DataBinding
+- Dagger2 (DI, merged at 24 May, 2017)
 ```
 
 ## 실행 환경 및 방법
